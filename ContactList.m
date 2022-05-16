@@ -33,8 +33,32 @@
   }
 }
 
-- (void) printList: (NSInteger) index {
-  NSString *list = [_lists objectAtIndex:index];
-  NSLog(@"%@",list);
+- (void) showList: (NSInteger) index {
+  if (index >= 0 && index <_lists.count) {
+    Contact *list = [_lists objectAtIndex:index];
+    NSLog(@"%@",[NSString stringWithFormat:@"\nFirstname: %@ Lastname: %@ Email: %@ Phone: Mobile: %@, Work: %@, Home: %@", [list firstName],[list lastName],[list email], [[list phone] objectForKey:@"Mobile"], [[list phone] objectForKey:@"Work"], [[list phone] objectForKey:@"Home"]]);
+  } else {
+    NSLog(@"not found");
+  }
 }
+  
+- (void) findContact: (NSString *) userSearch {
+  for (Contact *list in _lists) {
+    if (([userSearch isEqualToString: [list firstName]]) || ([userSearch isEqualToString: [list firstName]]) ||([userSearch isEqualToString: [list firstName]])) {
+      NSLog(@"%@",[NSString stringWithFormat:@"\nFirstname: %@ Lastname: %@ Email: %@", [list firstName],[list lastName],[list email]]);
+    }
+  }
+}
+
+- (BOOL) checkEmailExist: (NSString *) userEmail {
+  BOOL (exist) = NO;
+  for (Contact *list in _lists) {
+    if ([userEmail isEqualToString: [list email]]) {
+      exist = YES;
+      break;
+    }
+  }
+  return exist;
+}
+  
 @end

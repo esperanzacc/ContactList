@@ -16,6 +16,21 @@
     _firstName = firstName;
     _lastName = lastName;
     _email = email;
+    _phone = nil;
+    _history = [[NSMutableArray alloc]init];
+  }
+  return self;
+}
+
+- (instancetype)initWithName: (NSString *) firstName andLastName: (NSString *) lastName andEmail: (NSString *) email andPhone: (NSMutableDictionary *) phone
+{
+  self = [super init];
+  if (self) {
+    _firstName = firstName;
+    _lastName = lastName;
+    _email = email;
+    _phone = phone;
+    _history = [[NSMutableArray alloc]init];
   }
   return self;
 }

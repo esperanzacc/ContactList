@@ -14,8 +14,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) NSString *firstName;
 @property (nonatomic) NSString *lastName;
 @property (nonatomic) NSString *email;
+@property (nonatomic) NSMutableDictionary *phone;
+@property (nonatomic) NSMutableArray *history;
 
 - (instancetype)initWithName: (NSString *) firstName andLastName: (NSString *) lastName andEmail: (NSString *) email;
+- (instancetype)initWithName: (NSString *) firstName andLastName: (NSString *) lastName andEmail: (NSString *) email andPhone: (NSMutableDictionary *) phone;
 
 @end
 

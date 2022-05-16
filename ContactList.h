@@ -17,7 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init;
 - (void) addContact:(Contact *)newContact;
 - (void) printAllLists;
-- (void) printList: (NSInteger) index;
+- (void) showList: (NSInteger) index;
+- (void) findContact: (NSString *) userSearch;
+- (BOOL) checkEmailExist: (NSString *) userEmail;
 
 @end
 

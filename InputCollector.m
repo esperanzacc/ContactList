@@ -13,8 +13,6 @@
 - (NSString *)inputForPrompt: (NSString *)promptString {
     char inputChars[255];
   
-//    NSLog(@"%@", promptString);
-  
     fgets(inputChars, 255, stdin);
   
     NSString *str = [NSString stringWithUTF8String:inputChars];
