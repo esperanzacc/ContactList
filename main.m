@@ -42,6 +42,7 @@ int main(int argc, const char * argv[]) {
     ContactList *lists = [[ContactList alloc]init];
     sample(lists);
     NSMutableDictionary *phone = [NSMutableDictionary new];
+    NSMutableArray *history = [NSMutableArray new];
     
     while (createContact) {
       NSString *optionInput = [inputCollector inputForPrompt:@""];
@@ -49,6 +50,7 @@ int main(int argc, const char * argv[]) {
       if ([optionInput isEqualToString:@"quit"]) {
         break;
       } else if ([optionInput isEqualToString:@"new"]) {
+        [history addObject:@"new"];
         // prompt the user for information
         NSLog(@"Enter your email address:");
         NSString *email = [inputCollector inputForPrompt:@""];
@@ -84,16 +86,39 @@ int main(int argc, const char * argv[]) {
           [lists addContact:contact];
         }
       } else if ([optionInput isEqualToString:@"list"]) {
+        [history addObject:@"list"];
         [lists printAllLists];
       } else if ([optionInput isEqualToString:@"show"]) {
+        [history addObject:@"show"];
         NSLog(@"Enter the index:");
         NSString *index = [inputCollector inputForPrompt:@""];
         [lists showList:[index integerValue]];
       } else if ([optionInput isEqualToString:@"find"]) {
+        [history addObject:@"find"];
         NSLog(@"Enter keyword (one's firstname or one's lastname or one's email)");
         NSString *keyword = [inputCollector inputForPrompt:@""];
         [lists findContact:keyword];
       } else if ([optionInput isEqualToString:@"history"]) {
+        if (history.count == 0) {
+          NSLog(@"no history record.");
+        } else if (history.count == 1) {
+          NSLog(@"history %ld \n%@", history.count, [history objectAtIndex:0]);
+        } else if (history.count == 2) {
+          NSLog(@"history %ld", history.count);
+          for (int i = 0; i < 2; i++) {
+            NSLog(@"%@", [history objectAtIndex:i]);
+          }
+        } else if (history.count == 3) {
+          NSLog(@"history %ld", history.count);
+          for (int i = 0; i <= 2; i++) {
+            NSLog(@"%@", [history objectAtIndex:i]);
+          }
+        } else {
+          NSLog(@"history %ld", history.count);
+          for (long i = (history.count -2); i == 0; i++) {
+            NSLog(@"%@", [history objectAtIndex:i]);
+          }
+        }
         
       }
       NSLog(@"%@", menu);
