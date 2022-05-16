@@ -9,15 +9,24 @@
 
 @implementation InputCollector
 
+- (instancetype)init
+{
+  self = [super init];
+  if (self) {
+    _history = [NSMutableArray new];
+  }
+  return self;
+}
+
 
 - (NSString *)inputForPrompt: (NSString *)promptString {
-    char inputChars[255];
-  
-    fgets(inputChars, 255, stdin);
-  
-    NSString *str = [NSString stringWithUTF8String:inputChars];
-    return [str stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-  
+  char inputChars[255];
+  NSLog(@"%@", promptString);
+  fgets(inputChars, 255, stdin);
+
+  NSString *str = [[NSString stringWithCString: inputChars encoding: NSUTF8StringEncoding] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+  [_history addObject:str];
+  return str;
 }
 
 @end

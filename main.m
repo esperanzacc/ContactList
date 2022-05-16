@@ -30,11 +30,9 @@ int sample(ContactList *contactList) {
   return 0;
 }
 
-
 int main(int argc, const char * argv[]) {
   @autoreleasepool {
     NSString *menu = @"\nWhat would you like to do next?\nnew - create a new contact\nlist - List all contacts\nshow - Display details along with an index\nfind <keyword> - Find contact with a keyword\nhistory - View last three commands\nquit - Exit Application";
-    NSLog(@"%@", menu);
     
     BOOL (createContact) = YES;
     
@@ -42,89 +40,65 @@ int main(int argc, const char * argv[]) {
     ContactList *lists = [[ContactList alloc]init];
     sample(lists);
     NSMutableDictionary *phone = [NSMutableDictionary new];
-    NSMutableArray *history = [NSMutableArray new];
     
     while (createContact) {
-      NSString *optionInput = [inputCollector inputForPrompt:@""];
+      NSString *optionInput = [inputCollector inputForPrompt:menu];
       
       if ([optionInput isEqualToString:@"quit"]) {
         break;
       } else if ([optionInput isEqualToString:@"new"]) {
-        [history addObject:@"new"];
         // prompt the user for information
-        NSLog(@"Enter your email address:");
-        NSString *email = [inputCollector inputForPrompt:@""];
+        NSString *email = [inputCollector inputForPrompt:@"Enter your email address:"];
         [lists checkEmailExist:email];
         if ([lists checkEmailExist:email]) {
           NSLog(@"This email is already be used. Please create another email.");
           break;
         } else {
           NSLog(@"Succeed!");
-          NSLog(@"Enter your firstname:");
-          NSString *firstName = [inputCollector inputForPrompt:@""];
-          NSLog(@"Enter your lastname:");
-          NSString *lastName = [inputCollector inputForPrompt:@""];
-          
+          NSString *firstName = [inputCollector inputForPrompt:@"Enter your firstname:"];
+          NSString *lastName = [inputCollector inputForPrompt:@"Enter your lastname:"];
+
           while (YES) {
-            NSLog(@"Do you want to add a phone number? \n(y/n)");
-            NSString *addPhone = [inputCollector inputForPrompt:@""];
+            NSString *addPhone = [inputCollector inputForPrompt:@"Do you want to add a phone number? \n(y/n)"];
             if ([addPhone isEqualToString:@"y"]) {
-              NSLog(@"Select the following option(0: Mobile, 1: Work, 2: Home):");
-              NSString *option = [inputCollector inputForPrompt:@""];
+              NSString *option = [inputCollector inputForPrompt:@"Select the following option(0: Mobile, 1: Work, 2: Home):"];
               if ([option isEqualToString:@"0"] || [option isEqualToString:@"1"] || [option isEqualToString:@"2"] ) {
-                NSLog(@"Enter your phone number (eg. xxx-xxx-xxxx):");
-                NSString *phoneNumber = [inputCollector inputForPrompt:@""];
-                
+                NSString *phoneNumber = [inputCollector inputForPrompt:@"Enter your phone number (eg. xxx-xxx-xxxx):"];
                 NSMutableArray *phones = [[NSMutableArray alloc]initWithObjects:@"Mobile", @"Work", @"Home", nil];
                 [phone setObject:phoneNumber forKey:[phones objectAtIndex:[option intValue]]];
-            }
+              } else {
+                NSLog(@"Please type num from 0 to 2.");
+              }
           } else if ([addPhone isEqualToString:@"n"]) {
             break;
             }
           }
           Contact *contact = [[Contact alloc]initWithName:firstName andLastName:lastName andEmail:email andPhone:phone];
           [lists addContact:contact];
-        }
+      }
       } else if ([optionInput isEqualToString:@"list"]) {
-        [history addObject:@"list"];
         [lists printAllLists];
       } else if ([optionInput isEqualToString:@"show"]) {
-        [history addObject:@"show"];
-        NSLog(@"Enter the index:");
-        NSString *index = [inputCollector inputForPrompt:@""];
+        NSString *index = [inputCollector inputForPrompt:@"Enter the index:"];
         [lists showList:[index integerValue]];
       } else if ([optionInput isEqualToString:@"find"]) {
-        [history addObject:@"find"];
-        NSLog(@"Enter keyword (one's firstname or one's lastname or one's email)");
-        NSString *keyword = [inputCollector inputForPrompt:@""];
+        NSString *keyword = [inputCollector inputForPrompt:@"Enter keyword (one's firstname or one's lastname or one's email)"];
         [lists findContact:keyword];
       } else if ([optionInput isEqualToString:@"history"]) {
-        if (history.count == 0) {
-          NSLog(@"no history record.");
-        } else if (history.count == 1) {
-          NSLog(@"history %ld \n%@", history.count, [history objectAtIndex:0]);
-        } else if (history.count == 2) {
-          NSLog(@"history %ld", history.count);
-          for (int i = 0; i < 2; i++) {
-            NSLog(@"%@", [history objectAtIndex:i]);
-          }
-        } else if (history.count == 3) {
-          NSLog(@"history %ld", history.count);
-          for (int i = 0; i <= 2; i++) {
-            NSLog(@"%@", [history objectAtIndex:i]);
-          }
+        if ([[inputCollector history] count] >= 3) {
+          NSLog(@"%@\n%@\n%@\n", [[inputCollector history] objectAtIndex: [[inputCollector history] count] - 1],
+                [[inputCollector history] objectAtIndex: [[inputCollector history] count] - 2],
+                [[inputCollector history] objectAtIndex: [[inputCollector history] count] - 3]);
+        } else if ([[inputCollector history] count] == 2) {
+          NSLog(@"%@\n%@", [[inputCollector history] objectAtIndex: 1], [[inputCollector history] objectAtIndex: 0]);
+        } else if ([[inputCollector history] count] == 1) {
+          NSLog(@"%@", [[inputCollector history] objectAtIndex: 0]);
         } else {
-          NSLog(@"history %ld", history.count);
-          for (long i = (history.count -2); i == 0; i++) {
-            NSLog(@"%@", [history objectAtIndex:i]);
-          }
+          NSLog(@"no history record.");
         }
-        
       }
-      NSLog(@"%@", menu);
     }
-    
-    
+
   }
   return 0;
 }
